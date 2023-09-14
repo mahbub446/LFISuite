@@ -526,7 +526,7 @@ def hackSE(par):
 
 		whoami = cleanOutput(execSeCmd("whoami"), True)
 		pwd = cleanOutput(execSeCmd("pwd"), True)
-	 	shell_host = removeHttpFromWebsite(extractWebsiteFromUrl(se_url))
+	shell_host = removeHttpFromWebsite(extractWebsiteFromUrl(se_url))
 
 		cmd = ""
 		while(cmd != "exit" and cmd != "quit"):
